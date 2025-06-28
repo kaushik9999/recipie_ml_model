@@ -1,0 +1,21 @@
+stages:
+  preprocess:
+    cmd: python scripts/preprocess.py
+    deps:
+      - data/raw/recipes_data.csv
+      - params.yaml 
+    outs:
+      - data/processed/train.csv
+      - data/processed/test.csv
+  train:
+    cmd: python scripts/train_model.py
+    deps:
+      - data/processed/train.csv
+      - data/processed/test.csv
+    outs:
+      - models/flan_t5_small
+  evaluate:
+    cmd: python scripts/evaluate_model.py
+    deps:
+      - models/flan_t5_small
+      - data/processed/test.csv
